@@ -41,18 +41,15 @@ for (auto iter = adjList[v].begin(); iter != adjList[v].end(); iter++) {
 }
 
 void retrieveEdge(int u, int v) {
-for (auto iter = adjList[u].begin(); iter != adjList[u].end(); iter++) {
-	if (iter->first == v) {
-		//todo
-		cout << "Weight of edge: "
-		break;
+for (const auto &neighbor : adjList[u]) {
+	if (neighbor.first == v) {
+		cout << "Weight of egde betweeen vertices " << u << " and " << v << ": " << neighbor.second << endl;
+		return;
 	}
-	if (iter == adjList[u].end()) {
-	cout << "Edge Not Valid" << endl; break;
-	}
-
-  }
 }
+	cout << "Edge Not Valid" << endl;
+}
+
 void BFS(int source) {
 if (source < 0 or source > vertex) {
 	cout << "Error: Node not in list" << endl;
@@ -128,8 +125,9 @@ g.addEdge(0,1, 10);
 g.addEdge(0,3, 5);
 g.addEdge(1,2, 3);
 g.addEdge(2,3, 8);
-g.BFS(0);
 g.printGraph();
+//g.retrieveEdge(0,4)
+//g.BFS(0);
 //g.dikjstras(0);
 //cout << "After Delete: " << endl;
 //er Delete: " << endl;
