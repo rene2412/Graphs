@@ -14,67 +14,15 @@ Graph(int v) : vertex(v) {
 }
 
 void addEdge(int u, int v, int weight) {
+//a node will be inserted into adjList, and will have a pair of its neighbor and its distance from it
 	adjList[u].push_back(make_pair(v, weight));
 	adjList[v].push_back(make_pair(u, weight));
 }
 
-void removeEdge(int u, int v) {
-for (auto iter = adjList[u].begin(); iter != adjList[u].end(); iter++) {
-	if (iter->first == v) {
-		adjList[u].erase(iter);
-		break;
-	}
-	if (iter == adjList[u].end()) {
-	cout << "Connection Not Valid" << endl; break;
-	}
-}
-
-for (auto iter = adjList[v].begin(); iter != adjList[v].end(); iter++) {
-	if (iter->first == u) {
-		adjList[v].erase(iter);
-		break;
-	}
-	if (iter == adjList[v].end()) {
-	cout << "Connection Not Valid" << endl; break;
-	}
-   }
-}
-
-void retrieveEdge(int u, int v) {
-for (const auto &neighbor : adjList[u]) {
-	if (neighbor.first == v) {
-		cout << "Weight of egde betweeen vertices " << u << " and " << v << ": " << neighbor.second << endl;
-		return;
-	}
-}
-	cout << "Edge Not Valid" << endl;
-}
-
-void BFS(int source) {
-if (source < 0 or source > vertex) {
-	cout << "Error: Node not in list" << endl;
-	return;
-}
-queue<int> q; 
-vector<bool> visited(vertex, false);
-visited[source] = true;
-q.push(source);
-while (!q.empty()) {
-int process = q.front();
-q.pop();
-cout << "Node: " << process << endl;
-   for (const auto& neighbor : adjList[process]) {
-	int adj_neighbor =  neighbor.first;
-	if (!visited[adj_neighbor]) {
-		visited[adj_neighbor] = true;
-		q.push(adj_neighbor);
-	}
-     }
-  }
-}
-//for later
 void dikjstras(int source) {
+//the distance vector that is initalized to the size of the vertexs
 vector<int> dist(vertex, INT_MAX);
+vector<int> pred(vertex, -1);
 priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
 //initalize the source distance to 0 
 dist[source] = 0;
@@ -88,8 +36,11 @@ pq.pop();
 for (auto& neighbor : adjList[u]) {
 int v = neighbor.first;
 int weight = neighbor.second;
+//if the neighbors node distance is less than the current nodes distance and distance
+//then update the new distance
 if (dist[v] > dist[u] + weight) {
 	dist[v] = dist[u] + weight;
+	pred[v] = u;
 	pq.push(make_pair(dist[v], v));
 	}
    }
@@ -101,7 +52,7 @@ cout << "Vertex " << i << ": ";
 if (dist[i] == INT_MAX) {
 cout << "N/A" << endl;
    }
-else cout << dist[i] << endl;
+else cout << "Distance: " << dist[i] << " | Predecessor: " << pred[i] << endl;
  }
 }
 
@@ -120,18 +71,14 @@ for (int i = 0; i < vertex; i++) {
 
 int main() {
 Graph g(5);
-//cout << "Before Delete: " << endl;
-g.addEdge(0,1, 10);
-g.addEdge(0,3, 5);
-g.addEdge(1,2, 3);
-g.addEdge(2,3, 8);
+g.addEdge(1,4,5);
+g.addEdge(1,2,2);
+g.addEdge(2,4,5);
+g.addEdge(2,3,14);
+g.addEdge(2,5,4);
+g.addEdge(3,5,34);
+g.addEdge(4,5,58);
+
 g.printGraph();
-//g.retrieveEdge(0,4)
-//g.BFS(0);
 //g.dikjstras(0);
-//cout << "After Delete: " << endl;
-//er Delete: " << endl;
-//g.removeEdge(0,4);
-//g.removeEdge(1,3);
-//g.printGraph();
 }
