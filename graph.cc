@@ -14,7 +14,19 @@ Graph(int v) : vertex(v) {
 }
 
 void addEdge(int u, int v, int weight) {
+	if (u < 0 or u >= vertex or v < 0 or v >= vertex) {
+		cout << u << ":" << v << endl;
+		cout << "Invalid indices" << endl;
+		return;
+	}
+	if (u >= adjList.size()) {
+		adjList.resize(u + 1);
+	}
+	if (v >= adjList.size()) {
+		adjList.resize(v + 1);
+	}
 //a node will be inserted into adjList, and will have a pair of its neighbor and its distance from it
+//will add edges and its weight bidirectional
 	adjList[u].push_back(make_pair(v, weight));
 	adjList[v].push_back(make_pair(u, weight));
 }
@@ -70,7 +82,7 @@ for (int i = 0; i < vertex; i++) {
 };
 
 int main() {
-Graph g(5);
+Graph g(6);
 g.addEdge(1,4,5);
 g.addEdge(1,2,2);
 g.addEdge(2,4,5);
@@ -78,7 +90,6 @@ g.addEdge(2,3,14);
 g.addEdge(2,5,4);
 g.addEdge(3,5,34);
 g.addEdge(4,5,58);
-
-g.printGraph();
-//g.dikjstras(0);
+//g.printGraph();
+g.dikjstras(1);
 }
